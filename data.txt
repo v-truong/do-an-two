@@ -1,0 +1,263 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th10 18, 2022 lúc 08:42 AM
+-- Phiên bản máy phục vụ: 10.4.24-MariaDB
+-- Phiên bản PHP: 8.1.6
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Cơ sở dữ liệu: `library`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `admin`
+--
+
+CREATE TABLE `admin` (
+  `id` int(4) NOT NULL,
+  `fullname` varchar(50) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `password` varchar(80) NOT NULL,
+  `avatar` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `role` varchar(20) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1,
+  `two_auth` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `announce`
+--
+
+CREATE TABLE `announce` (
+  `id` int(4) NOT NULL,
+  `user_id` int(4) NOT NULL,
+  `announce_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `announce_type` varchar(50) NOT NULL,
+  `target_id` int(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `book`
+--
+
+CREATE TABLE `book` (
+  `id` int(4) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `price` mediumtext NOT NULL,
+  `description` text DEFAULT NULL,
+  `publisher` varchar(50) DEFAULT NULL,
+  `auth` varchar(50) DEFAULT NULL,
+  `image` varchar(50) NOT NULL,
+  `category_id` int(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `book_detail`
+--
+
+CREATE TABLE `book_detail` (
+  `id` int(4) NOT NULL,
+  `code` varchar(10) NOT NULL,
+  `book_id` int(4) NOT NULL,
+  `import_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `note` text DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `borrow`
+--
+
+CREATE TABLE `borrow` (
+  `id` int(4) NOT NULL,
+  `reader_id` int(4) NOT NULL,
+  `book_detail_id` int(4) NOT NULL,
+  `borrow_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `due_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `return_date` timestamp NULL DEFAULT NULL,
+  `note` text DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `category`
+--
+
+CREATE TABLE `category` (
+  `id` int(4) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `description` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `reader`
+--
+
+CREATE TABLE `reader` (
+  `id` int(4) NOT NULL,
+  `code` varchar(20) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `avatar` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `address` text DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `accept_email` tinyint(1) NOT NULL DEFAULT 0,
+  `gender` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Chỉ mục cho các bảng đã đổ
+--
+
+--
+-- Chỉ mục cho bảng `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `phone` (`phone`);
+
+--
+-- Chỉ mục cho bảng `announce`
+--
+ALTER TABLE `announce`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `book`
+--
+ALTER TABLE `book`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category_id` (`category_id`);
+
+--
+-- Chỉ mục cho bảng `book_detail`
+--
+ALTER TABLE `book_detail`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `book_id` (`book_id`);
+
+--
+-- Chỉ mục cho bảng `borrow`
+--
+ALTER TABLE `borrow`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `book_detail_id` (`book_detail_id`),
+  ADD KEY `reader_id` (`reader_id`);
+
+--
+-- Chỉ mục cho bảng `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `reader`
+--
+ALTER TABLE `reader`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1007;
+
+--
+-- AUTO_INCREMENT cho bảng `announce`
+--
+ALTER TABLE `announce`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `book`
+--
+ALTER TABLE `book`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+
+--
+-- AUTO_INCREMENT cho bảng `book_detail`
+--
+ALTER TABLE `book_detail`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+
+--
+-- AUTO_INCREMENT cho bảng `borrow`
+--
+ALTER TABLE `borrow`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `category`
+--
+ALTER TABLE `category`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT cho bảng `reader`
+--
+ALTER TABLE `reader`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
+
+--
+-- Các ràng buộc cho các bảng đã đổ
+--
+
+--
+-- Các ràng buộc cho bảng `book`
+--
+ALTER TABLE `book`
+  ADD CONSTRAINT `book_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+
+--
+-- Các ràng buộc cho bảng `book_detail`
+--
+ALTER TABLE `book_detail`
+  ADD CONSTRAINT `book_detail_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `book` (`id`);
+
+--
+-- Các ràng buộc cho bảng `borrow`
+--
+ALTER TABLE `borrow`
+  ADD CONSTRAINT `borrow_ibfk_1` FOREIGN KEY (`book_detail_id`) REFERENCES `book_detail` (`id`),
+  ADD CONSTRAINT `borrow_ibfk_2` FOREIGN KEY (`reader_id`) REFERENCES `reader` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
