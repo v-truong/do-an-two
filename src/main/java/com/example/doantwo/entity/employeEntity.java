@@ -18,7 +18,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class employeEntity {
+public class EmployeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;

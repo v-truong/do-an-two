@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.doantwo.modal.employeeDto;
+import com.example.doantwo.modal.EmployeeDto;
 import com.example.doantwo.repository.employeeRepository;
 import com.example.doantwo.service.employeeservice;
 
 @RestController
 @RequestMapping(path = "/employee")
-public class employeeController {
+public class EmployeeController {
     @Autowired
     private employeeRepository employeeRepository;
     @Autowired
@@ -28,11 +28,11 @@ public class employeeController {
     // public List<employeEntity> getAll(){
     //     return employeeRepository.findAll();
     // }
-    public List<employeeDto> getAll(){
+    public List<EmployeeDto> getAll(){
         return employeeservice.getAll();
     }
     @PostMapping(path = "/add")
-    public employeeDto addemEmployeeDto(@RequestBody employeeDto employeeDto){
+    public EmployeeDto addemEmployeeDto(@RequestBody EmployeeDto employeeDto){
         employeeservice.add(employeeDto);
         return employeeDto;
     }
