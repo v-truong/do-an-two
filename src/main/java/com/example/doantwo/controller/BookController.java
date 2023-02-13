@@ -61,6 +61,6 @@ public class BookController {
     } 
     @GetMapping(path = "show")
     public Page<BookDto> getAll(Pageable pageable) {
-      return bookService.getUsers(pageable);
+      return  bookService.getUsers(pageable);
   }
 }
