@@ -56,7 +56,6 @@ public interface employeeservice {
 
     @Override
     public List<EmployeeDto> getAll() {
-        
        List<EmployeeDto> employeeDtos=new ArrayList<EmployeeDto>();
        employeeRepository.findAll().forEach((employe)->{
         employeeDtos.add(modelMapper.map(employe,EmployeeDto.class));

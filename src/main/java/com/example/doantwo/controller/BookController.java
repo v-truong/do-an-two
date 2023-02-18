@@ -1,5 +1,7 @@
 package com.example.doantwo.controller;
 
+import java.util.List;
+
 import javax.websocket.server.PathParam;
 
 
@@ -27,7 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Controller
+
 @RestController
 @RequestMapping(path ="/book")
 @CrossOrigin
@@ -60,7 +62,19 @@ public class BookController {
         bookService.delete(id);
     } 
     @GetMapping(path = "show")
-    public Page<BookDto> getAll(Pageable pageable) {
-      return  bookService.getUsers(pageable);
+    public List<BookDto> getAll(){
+    
+      // try {
+        return bookService.getAll();
+    // } catch (Exception e) {
+    //     e.printStackTrace();
+    //     return null;
+    // }
   }
+  @GetMapping(value="showpage")
+  public Page<BookDto> getMethodName( @RequestParam(defaultValue = "0") int page,
+  @RequestParam(defaultValue = "1") int size) {
+      return bookService.getPage(page,size) ;
+  }
+  
 }

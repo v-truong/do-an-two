@@ -1,9 +1,8 @@
 package com.example.doantwo.service.implement;
 
-import java.util.Optional;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale.Category;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -12,10 +11,10 @@ import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.example.doantwo.entity.CategoryEntity;
 import com.example.doantwo.entity.BookEntity;
 import com.example.doantwo.modal.BookDto;
@@ -56,13 +55,36 @@ public class Bookservicer implements IBookService{
         return null;
     }
     @Override
-    public Page<BookDto> getUsers(Pageable pageable) {
-        Page<BookEntity> users = bookReponsitory.findAll(pageable);
-        List<BookDto> userDtos = users.stream()
-            .map(user -> modelMapper.map(user, BookDto.class))
-            .collect(Collectors.toList());
-       return new PageImpl<>(userDtos,pageable,userDtos.size());
+    public List<BookDto> getAll() {
+        List<BookDto> employeeDtos=new ArrayList<BookDto>();
+        bookReponsitory.findAll().forEach((employe)->{
+         employeeDtos.add(modelMapper.map(employe,BookDto.class));
+        });
+        return employeeDtos;
+        
     }
+    @Override
+    public Page<BookDto> getPage(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<BookEntity> page=bookReponsitory.findAll(pageable);
 
+        return page.map(bookentity->modelMapper.map(bookentity,BookDto.class));
+    }
+    
+    // @Override
+    // public List<BookDto> getAll() {
+    //     List<BookEntity> books = bookReponsitory.findAll();
+    //     List<BookDto> bookDtos = books.stream()
+    //             .map(book -> modelMapper.map(book, BookDto.class))
+    //             .collect(Collectors.toList());
+    //     return bookDtos;
+    // }
+
+    // public List<UserDto> getAllUsers() {
+    //     List<User> users = userRepository.findAll();
+    //     return users.stream()
+    //         .map(user -> modelMapper.map(user, UserDto.class))
+    //         .collect(Collectors.toList());
+    // }
    
 }

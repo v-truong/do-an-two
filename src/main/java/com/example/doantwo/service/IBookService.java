@@ -14,5 +14,6 @@ public interface IBookService {
  BookDto save(BookDto bookDto);
  BookDto delete(Long id);
  BookDto update(Long id,BookDto bookDto);
- Page<BookDto> getUsers(Pageable pageable);
+ List<BookDto> getAll();
+ Page<BookDto> getPage(int pageNumber, int pageSize);
 }
