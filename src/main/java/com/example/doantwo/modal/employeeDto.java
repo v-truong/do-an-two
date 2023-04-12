@@ -8,7 +8,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class employeeDto {
+public class EmployeeDto {
 
     private int Id;
     private int EmployeeCode;
