@@ -19,6 +19,7 @@ import com.example.doantwo.entity.BookEntity;
 import com.example.doantwo.modal.BookDto;
 import com.example.doantwo.repository.BookReponsitory;
 import com.example.doantwo.service.IBookService;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.google.common.base.Optional;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
-@RestController
+@Controller
 @RequestMapping(path ="/book")
 @CrossOrigin
 public class BookController {
@@ -76,5 +77,13 @@ public class BookController {
   @RequestParam(defaultValue = "1") int size) {
       return bookService.getPage(page,size) ;
   }
-  
+  @GetMapping(value = {"/opp","/opp/{id}"})
+public String testOptional(@PathVariable(name = "id", required=false) Optional<Integer> a){
+   if(a.isPresent()){
+      return "null";
+   }else{
+      return "notnulll";
+   }
+}
+
 }
